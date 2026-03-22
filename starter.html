@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication System</title>
+    <link rel="stylesheet" href="sstyle2.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Inter:wght@400;600&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Playfair Display', serif;
+            background: linear-gradient(135deg, #FAF3DD 0%, #E8DCC4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            color: #2C5F5D;
+        }
+
+        .container {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            padding: 42px;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+            width: 100%;
+            max-width: 520px;
+            border: 1px solid rgba(104, 176, 171, 0.2);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        h2 {
+            color: #2C5F5D;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2C5F5D;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid #dfe6ee;
+            border-radius: 14px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: #ffffff;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #68B0AB;
+            box-shadow: 0 0 0 3px rgba(104, 176, 171, 0.2);
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #B8E0D2 0%, #95D5C4 100%);
+            color: #2C5F5D;
+            padding: 15px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            margin-top: 10px;
+            font-family: 'Playfair Display', serif;
+            box-shadow: 0 10px 25px rgba(184, 224, 210, 0.45);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #A0D4C5 0%, #7EC4B5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(160, 212, 197, 0.45);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, #C8D5B9 0%, #A8BFA5 100%);
+            color: #2C5F5D;
+        }
+
+        button.secondary:hover {
+            background: linear-gradient(135deg, #B8CFAF 0%, #94B59A 100%);
+        }
+
+        button.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #fff;
+        }
+
+        button.danger:hover {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        }
+
+        .link-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #4A8A87;
+            font-weight: 600;
+        }
+
+        .link-text a {
+            color: #2C5F5D;
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        .link-text a:hover {
+            text-decoration: underline;
+            color: #68B0AB;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid transparent;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        .alert.success {
+            background: #e8f6f2;
+            color: #1f6f63;
+            border-color: #b8e0d2;
+        }
+
+        .alert.error {
+            background: #fdf2f2;
+            color: #b91c1c;
+            border-color: #fecdd3;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .user-info p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .user-info strong {
+            color: #667eea;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle input {
+            padding-right: 45px;
+        }
+
+        .password-toggle button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            padding: 5px 10px;
+            background: transparent;
+            color: #667eea;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .password-toggle button:hover {
+            background: transparent;
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="page active">
+            <h2>🔐 Login</h2>
+            <div id="loginAlert"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group password-toggle">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                    <button type="button" onclick="togglePassword('loginPassword')">Show</button>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <div class="link-text">
+                Don't have an account? <a href="#" onclick="showPage('registerPage')">Register here</a>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="registerPage" class="page">
+            <h2>📝 Register</h2>
+            <div id="registerAlert"></div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group password-toggle">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required minlength="6">
+                    <button type="button" onclick="togglePassword('registerPassword')">Show</button>
+                </div>
+                <div class="form-group password-toggle">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                    <button type="button" onclick="togglePassword('confirmPassword')">Show</button>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <div class="link-text">
+                Already have an account? <a href="#" onclick="showPage('loginPage')">Login here</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page">
+            <div class="dashboard-header">
+                <h2>👋 Dashboard</h2>
+                <button class="danger" onclick="logout()" style="width: auto; padding: 10px 20px;">Logout</button>
+            </div>
+            
+            <div class="user-info">
+                <h3 style="margin-bottom: 15px; color: #333;">Welcome back!</h3>
+                <p><strong>Name:</strong> <span id="userName"></span></p>
+                <p><strong>Email:</strong> <span id="userEmail"></span></p>
+                <p><strong>Member since:</strong> <span id="memberSince"></span></p>
+                <p><strong>Last login:</strong> <span id="lastLogin"></span></p>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="totalUsers">0</h3>
+                    <p>Total Users</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="loginCount">0</h3>
+                    <p>Your Logins</p>
+                </div>
+            </div>
+
+            <button class="secondary" onclick="showPage('loginPage')" style="margin-top: 20px;">Switch Account</button>
+        </div>
+    </div>
+
+    <script>
+        // Authentication Manager
+        class AuthManager {
+            constructor() {
+                this.USERS_KEY = 'registeredUsers';
+                this.SESSION_KEY = 'currentSession';
+            }
+
+            // Get all registered users
+            getUsers() {
+                try {
+                    const users = localStorage.getItem(this.USERS_KEY);
+                    return users ? JSON.parse(users) : [];
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                    return [];
+                }
+            }
+
+            // Save users to storage
+            saveUsers(users) {
+                localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
+            }
+
+            // Register new user
+            register(name, email, password) {
+                const users = this.getUsers();
+
+                // Check if email already exists
+                if (users.some(user => user.email === email)) {
+                    return { success: false, message: 'Email already registered!' };
+                }
+
+                // Create new user (in real app, NEVER store plain passwords!)
+                const newUser = {
+                    id: Date.now(),
+                    name: name,
+                    email: email,
+                    password: this.hashPassword(password), // Simple hash (not secure for production!)
+                    createdAt: new Date().toISOString(),
+                    loginCount: 0
+                };
+
+                users.push(newUser);
+                this.saveUsers(users);
+
+                return { success: true, message: 'Registration successful!' };
+            }
+
+            // Login user
+            login(email, password) {
+                const users = this.getUsers();
+                const user = users.find(u => u.email === email);
+
+                if (!user) {
+                    return { success: false, message: 'User not found!' };
+                }
+
+                if (user.password !== this.hashPassword(password)) {
+                    return { success: false, message: 'Incorrect password!' };
+                }
+
+                // Update login count and last login
+                user.loginCount++;
+                user.lastLogin = new Date().toISOString();
+                this.saveUsers(users);
+
+                // Create session
+                const session = {
+                    userId: user.id,
+                    email: user.email,
+                    name: user.name,
+                    loginTime: new Date().toISOString()
+                };
+
+                sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+
+                return { success: true, message: 'Login successful!', user: user };
+            }
+
+            // Check if user is logged in
+            isLoggedIn() {
+                return sessionStorage.getItem(this.SESSION_KEY) !== null;
+            }
+
+            // Get current session
+            getSession() {
+                try {
+                    const session = sessionStorage.getItem(this.SESSION_KEY);
+                    return session ? JSON.parse(session) : null;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            // Get current user data
+            getCurrentUser() {
+                const session = this.getSession();
+                if (!session) return null;
+
+                const users = this.getUsers();
+                return users.find(u => u.id === session.userId);
+            }
+
+            // Logout
+            logout() {
+                sessionStorage.removeItem(this.SESSION_KEY);
+            }
+
+            // Simple password hashing (NOT SECURE - for demo only!)
+            hashPassword(password) {
+                let hash = 0;
+                for (let i = 0; i < password.length; i++) {
+                    const char = password.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                return hash.toString();
+            }
+        }
+
+        // Initialize auth manager
+        const auth = new AuthManager();
+
+        // Check if user is already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            if (auth.isLoggedIn()) {
+                loadDashboard();
+            }
+        });
+
+        // Register Form Handler
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showAlert('registerAlert', 'Passwords do not match!', 'error');
+                return;
+            }
+
+            // Validate password length
+            if (password.length < 6) {
+                showAlert('registerAlert', 'Password must be at least 6 characters!', 'error');
+                return;
+            }
+
+            const result = auth.register(name, email, password);
+            
+            if (result.success) {
+                // Immediately log in so the dashboard greets the new user
+                const loginResult = auth.login(email, password);
+                if (!loginResult.success) {
+                    showAlert('registerAlert', 'Registered but auto-login failed. Please log in manually.', 'error');
+                    return;
+                }
+                showAlert('registerAlert', result.message, 'success');
+                window.location.href = "index.html"
+                setTimeout(() => {
+                    document.getElementById('registerForm').reset();
+                },1000);
+            } else {
+                showAlert('registerAlert', result.message, 'error');
+            }
+        });
+
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const result = auth.login(email, password);
+            
+            if (result.success) {
+                showAlert('loginAlert', result.message, 'success');
+                window.location.href = "index.html";   
+                setTimeout(() => {
+                    
+                    document.getElementById('loginForm').reset();
+                }, 1000);
+            } else {
+                showAlert('loginAlert', result.message, 'error');
+            }
+        });
+
+        // Load Dashboard
+        function loadDashboard() {
+            const user = auth.getCurrentUser();
+            if (!user) {
+                showPage('loginPage');
+                return;
+            }
+
+            // Update user info
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('memberSince').textContent = new Date(user.createdAt).toLocaleDateString();
+            document.getElementById('lastLogin').textContent = new Date(user.lastLogin).toLocaleString();
+            document.getElementById('loginCount').textContent = user.loginCount;
+            document.getElementById('totalUsers').textContent = auth.getUsers().length;
+
+            showPage('dashboardPage');
+        }
+
+        // Logout Function
+        function logout() {
+            auth.logout();
+            showAlert('loginAlert', 'Logged out successfully!', 'success');
+            showPage('loginPage');
+        }
+
+        // Show Page
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            // Clear alerts
+            document.querySelectorAll('[id$="Alert"]').forEach(alert => {
+                alert.innerHTML = '';
+            });
+        }
+
+        // Show Alert
+        function showAlert(elementId, message, type) {
+            const alertElement = document.getElementById(elementId);
+            alertElement.innerHTML = `<div class="alert ${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                alertElement.innerHTML = '';
+            }, 4000);
+        }
+
+        // Toggle Password Visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const btn = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = 'Hide';
+            } else {
+                input.type = 'password';
+                btn.textContent = 'Show';
+            }
+        }
+
+        // Log current data (for debugging)
+        console.log('Registered Users:', auth.getUsers());
+        console.log('Current Session:', auth.getSession());
+    </script>
+</body>
+</html>

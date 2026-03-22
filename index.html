@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Routine Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header id="header" class="header">
+        <div id="left-section" class="left-section">
+            <p id="Greetings" class="Greetings"> Hello, Darsh </p>
+            <p id="greet" class="greet"> How's your day</p>
+        </div>
+
+        <div id="middle-section" class="middle-section">
+            <p id="day" class="day">Day: <span id="currentDay"></span></p>
+            <p id="time" class="time">Time: <span id="currentTime"></span></p>
+        </div>
+
+        <div id="right-section" class="right-section">
+            <button id="checklist-btn" class="nav-checklist-btn" onclick="showChecklist()">My Checklist</button>
+            <img id="profile-picture" class="profile-picture" src="9815472.png">
+        </div>
+    </header>
+
+    <main id="main" class="main">
+        <div id="function-Section" class="function-Section">
+
+            <div id="Routine-Generator" class="Routine-Generator">
+                <p id="R-gen" class="R-gen">Hi It's Your Routine Generator! Specify your subjects, study time, and activities. I'll create a balanced routine with breaks and reminders!
+                </p>
+                <button id="Generate-R" class="Generate-R" onclick="showRoutineForm()">Generate Your Routine</button>
+            </div>
+
+            <div id="Activity-Analysis" class="Activity-Analysis">
+                <p id="A-Anl" class="A-Anl">View your complete activity analysis! Track study hours, break times, quiz scores, and productivity patterns with detailed charts and insights.
+                </p>
+                <button id="Generate-A" class="Generate-A" onclick="showDashboard()">View Dashboard</button>
+            </div>
+
+            <div id="Quiz-maker" class="Quiz-maker">
+                <p id="Quiz" class="Quiz">Ready for your daily quiz? Test your knowledge on subjects you've studied. Track your progress and identify areas for improvement!
+                </p>
+                <button id="Generate-Q" class="Generate-Q" onclick="showDailyQuiz()">Take Daily Quiz</button>
+            </div>
+        </div>
+
+        <div id="preview" class="preview">
+            <div class="preview-empty">Click a button to get started</div>
+        </div>
+    </main>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Profile Dashboard Modal -->
+    <div id="dashboardModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeDashboard()">×</button>
+            <h2 class="modal-title">Your Account</h2>
+            <div class="modal-grid">
+                <div class="modal-card">
+                    <div class="modal-label">User ID</div>
+                    <div class="modal-value" id="dashUserId">-</div>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-label">Name</div>
+                    <div class="modal-value" id="dashName">-</div>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-label">Email</div>
+                    <div class="modal-value" id="dashEmail">-</div>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-label">Login Count</div>
+                    <div class="modal-value" id="dashLoginCount">0</div>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-label">Points</div>
+                    <div class="modal-value" id="dashPoints">0</div>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-label">Last Login</div>
+                    <div class="modal-value" id="dashLastLogin">-</div>
+                </div>
+            </div>
+            <div id="dashLoginPrompt" class="modal-login-prompt">
+                <p>You are not logged in. Please log in to view your details and points.</p>
+                <button class="modal-login-btn" onclick="goToLogin()">Go to Login</button>
+            </div>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+
+    <script src="index.js"></script>
+    
+</body>
+</html>
